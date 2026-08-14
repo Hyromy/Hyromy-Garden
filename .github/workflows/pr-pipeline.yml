@@ -1,0 +1,22 @@
+name: PR Pipeline
+
+on:
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  check-branch:
+    if: github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking branch
+        run: |
+          if [ "${{ github.head_ref }}" != "dev" ]; then
+            echo "ERROR: When the base branch is 'main', only pull requests from the 'dev' branch are allowed."
+            exit 1
+          fi
+
+  run-quality-gate:
+    needs: check-branch
+    if: always() && (needs.check-branch.result == 'success' || needs.check-branch.result == 'skipped')
+    uses: ./.github/workflows/quality-gate.yml
