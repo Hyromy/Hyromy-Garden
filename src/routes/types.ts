@@ -1,12 +1,59 @@
 import { type ReactNode } from "react"
 
 /**
- * A utility type that checks for unique values in an object.
+ * Represents a tree structure of paths, where each key can either be a string (representing a path) or another PathTree (representing a nested group of paths).
  */
-export type CheckUniqueValues<T extends Record<string, string>> = {
-  [K in keyof T]: T[K] extends T[Exclude<keyof T, K>]
-    ? never
-    : T[K]
+export type PathTree = {
+  [key: string]: string | PathTree
+}
+
+type TrimLeadingSlashes<S extends string> = S extends `/${infer Rest}` ? TrimLeadingSlashes<Rest> : S
+type TrimTrailingSlashes<S extends string> = S extends `${infer Rest}/` ? TrimTrailingSlashes<Rest> : S
+
+/**
+ * A utility type that trims leading and trailing slashes from a string.
+ */
+export type TrimSlashes<S extends string> = TrimTrailingSlashes<TrimLeadingSlashes<S>>
+
+/**
+ * A utility type that joins a base path with a tail path, ensuring proper formatting.
+ * 
+ * If the tail path is empty, it returns the base path.
+ * If the base path is "/", it returns the tail path prefixed with "/".
+ * Otherwise, it concatenates the base and tail paths with a "/" separator.
+ */
+export type JoinPath<Base extends string, Tail extends string> =
+  TrimSlashes<Tail> extends ""
+    ? Base
+    : Base extends "/"
+      ? `/${TrimSlashes<Tail>}`
+      : `${Base}/${TrimSlashes<Tail>}`
+
+/**
+ * Represents a group of routes, where each key can either be a string (representing a path) or another RouteGroup (representing a nested group of routes).
+ * 
+ * The `root` property represents the base path for the group.
+ * The keys in the group represent the child routes.
+ */
+export type RouteGroup<Base extends string, T extends PathTree> = {
+  root: Base
+} & {
+  [K in keyof T]: T[K] extends string
+    ? JoinPath<Base, T[K]>
+    : T[K] extends PathTree
+      ? RouteGroup<JoinPath<Base, K & string>, T[K]>
+      : never
+}
+
+/**
+ * Represents the resolved paths for a given PathTree, where each key corresponds to a path in the tree.
+ */
+export type ResolvedPaths<T extends PathTree> = {
+  [K in keyof T]: T[K] extends string
+    ? JoinPath<"/", T[K]>
+    : T[K] extends PathTree
+      ? RouteGroup<JoinPath<"/", K & string>, T[K]>
+      : never
 }
 
 /**

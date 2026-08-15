@@ -1,10 +1,10 @@
-import { lazy } from "react"
 import type { AppRoute } from "./types"
 import { PATHS } from "./paths"
+import {
+  Index,
+  NotFound,
+} from "./lazyPages"
 import { Route } from "react-router-dom"
-
-const NotFound = lazy(() => import("../pages/NotFound"))
-const Index = lazy(() => import("../pages/Index"))
 
 /**
  * Defines the available routes in the application.
@@ -55,7 +55,7 @@ export const availableRoutes: AppRoute[] = [
   {
     path: "*",
     element: <NotFound />
-  }
+  },
 ]
 
 /**
