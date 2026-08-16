@@ -1,12 +1,17 @@
+import { Background } from "../layouts/Backgrounds";
+
 export default function Index() {
   return (
-    <main className="flex h-screen flex-col items-center justify-center bg-gray-950 gap-4">
-      <span className="font-bold text-4xl text-gray-200">
+    <Background
+      type="dotted"
+      className="flex flex-col h-screen justify-center items-center text-center p-2"
+    >
+      <span className="font-bold text-5xl text-accent-neon font-doto">
         Nada que mostrar
       </span>
-      <span className="italic text-gray-400">
+      <span className="font-monocraft text-fg/75">
         Quizá, pronto haya algo nuevo
       </span>
-    </main>
+    </Background>
   )
 }
