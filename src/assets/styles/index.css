@@ -1,1 +1,96 @@
 @import "tailwindcss";
+
+@font-face {
+    font-family: "Doto";
+    src: url("/fonts/Doto-Regular.ttf");
+}
+@font-face {
+    font-family: "Monocraft";
+    src: url("/fonts/Monocraft.ttf");
+}
+
+@theme {
+    --color-bg: var(--bg);
+    --color-surface: var(--surface);
+    --color-surface-hover: var(--surface-hover);
+    
+    --color-fg: var(--fg);
+    --color-fg-dim: var(--fg-dim);
+    --color-fg-bright: var(--fg-bright);
+
+    --color-border: var(--border);
+    --color-border-active: var(--border-active);
+
+    --color-accent: var(--accent);
+    --color-accent-glow: var(--accent-glow);
+    --color-accent-alt: var(--accent-alt);
+    --color-accent-neon: var(--accent-neon);
+
+    --font-doto: "Doto", monospace;
+    --font-monocraft: "Monocraft", monospace;
+}
+
+:root {
+    --bg: #030508;
+    --surface: #0a0e14;
+    --surface-hover: #101620;
+
+    --fg: #c2d1e0;
+    --fg-dim: #546a85;
+    --fg-bright: #ffffff;
+
+    --border: #1a2636;
+    --border-active: #00bbff;
+
+    --accent: #00bbff;
+    --accent-glow: rgba(0, 187, 255, 0.25);
+    --accent-alt: #ff0055;
+    --accent-neon: #ccff00;
+}
+
+.light {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface-hover: #e2e8f0;
+    --fg: #0f172a;
+    --fg-dim: #64748b;
+    --fg-bright: #000000;
+    --border: #cbd5e1;
+    --border-active: #0ea5e9;
+    --accent: #0ea5e9;
+    --accent-glow: rgba(14, 165, 233, 0.2);
+    --accent-alt: #e11d48;
+    --accent-neon: #65a30d;
+}
+
+@layer base {
+    * {
+        transition-property: 
+            background-color,
+            border-color,
+            color,
+            fill,
+            stroke,
+            text-decoration-color;
+        transition-duration: .3s;
+        transition-timing-function: ease;
+    }
+
+    html, body, #root {
+        min-height: 100%;
+    }
+
+    body {
+        background-color: var(--bg);
+        color: var(--fg);
+        font-family: var(--font-mono);
+
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .no-transitions *, 
+    .no-transitions {
+        transition: none !important;
+    }
+}

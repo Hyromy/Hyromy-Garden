@@ -1,12 +1,15 @@
+import { BrowserRouter, Routes } from "react-router-dom"
+import { Suspense } from "react"
+import { renderRoutes, availableRoutes } from "./routes/routes"
+
 export default function App() {
   return (
-    <main className="flex h-screen flex-col items-center justify-center bg-gray-950 gap-4">
-      <span className="font-bold text-4xl text-gray-200">
-        Nada que mostrar
-      </span>
-      <span className="italic text-gray-400">
-        Quizá, pronto haya algo nuevo
-      </span>
-    </main>
+    <BrowserRouter>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          {renderRoutes(availableRoutes)}
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   )
 }
