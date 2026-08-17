@@ -6,17 +6,15 @@ on:
 
 jobs:
   check-branch:
-    if: github.base_ref == 'main'
     runs-on: ubuntu-latest
     steps:
-      - name: Checking branch
+      - name: Validate source branch for main
         run: |
-          if [ "${{ github.head_ref }}" != "dev" ]; then
-            echo "ERROR: When the base branch is 'main', only pull requests from the 'dev' branch are allowed."
+          if [ "${{ github.base_ref }}" = "main" ] && [ "${{ github.head_ref }}" != "dev" ]; then
+            echo "::error::Only PRs from 'dev' branch are allowed into 'main'."
             exit 1
           fi
 
-  run-quality-gate:
+  quality-gate:
     needs: check-branch
-    if: always() && (needs.check-branch.result == 'success' || needs.check-branch.result == 'skipped')
     uses: ./.github/workflows/quality-gate.yml
